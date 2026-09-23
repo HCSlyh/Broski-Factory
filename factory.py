@@ -22,8 +22,6 @@ PAUSA_RATE_LIMIT = 60
 # =====================================================================
 # CONFIGURATION DUMP: SALVATAGGIO PARAMETRI SENZA NESTING DI STRINGHE
 # =====================================================================
-# Salviamo le variabili sensibili in un file JSON statico. I figli leggeranno
-# direttamente questo file, eliminando i bug legati ad apici e backslash.
 CONFIG_DATA = {
     "GROQ_API_KEY": GROQ_API_KEY,
     "MODELLO_LLM": MODELLO_LLM,
@@ -53,9 +51,9 @@ try:
         f.write("    prompt_fabbrica = 'Sei un ingegnere cloud. Genera un\\'applicazione web-server FastAPI in Python completa. Deve definire un\\'app = FastAPI() ed esporre un\\'endpoint POST \\'/api/v1/process\\'. Se il livello attuale ' + str(int(kwargs.get('livello', 2))) + ' e\\' inferiore a ' + str(config['MAX_LIVELLI']) + ', definisci le funzioni _crea_nodo_A() e _crea_nodo_B() richiamando la funzione vuota _esegui_chiamata_astratta(). Se il livello e\\' uguale a ' + str(config['MAX_LIVELLI']) + ', avvia il server uvicorn.run(app, host=\\'0.0.0.0\\', port=8000). Restituisci solo codice in blocco markdown python.'\n")
         f.write("    try:\n")
         f.write("        comp = client.chat.completions.create(model=config['MODELLO_LLM'], messages=[{'role': 'user', 'content': prompt_fabbrica}], temperature=0.01)\n")
-        f.write("        res = comp.choices[0].message.content.strip()\n")
+        f.write("        res = comp.choices.message.content.strip()\n")
         f.write("        if '```python' in res:\n")
-        f.write("            res = res.split('```python')[1].split('```')[0].strip()\n")
+        f.write("            res = res.split('```python').split('```').strip()\n")
         f.write("        return res\n")
         f.write("    except Exception as e:\n")
         f.write("        print('Errore runtime:', e)\n")
@@ -107,17 +105,18 @@ def genera_modulo_astratto(nome_modulo, descrizione_compito, livello_attuale, pr
         time.sleep(PAUSA_RATE_LIMIT)
 
     prompt_criptico = f"""Sei un ingegnere informatico senior specializzato in architetture cloud FastAPI B2B.
-    Crea uno script Python completo ed eseguibile chiamato '{nome_modulo}'.
+    Crea uno script Python completo ed eseguibile chiamato '{nome_modulo.lower()}'.
     
     COMPITO: {descrizione_compito}
     
     REQUISITI RIGIDI:
     1. Lo script deve importare 'fastapi', 'uvicorn' e 'os'.
     2. Deve includere una funzione `run()` principale eseguita nel blocco main che avvia un server uvicorn.
-    3. Se la fase attuale ({livello_attuale}) è inferiore a {MAX_LIVELLI}, lo script deve definire la funzione segnaposto `_esegui_chiamata_astratta()` che restituisce la stringa "pass".
-    4. Deve definire due funzioni chiamate `_crea_nodo_A()` e `_crea_nodo_B()` che scrivono su disco due file chiamati 'app_fase{livello_attuale + 1}_modulo1.py' e 'app_fase{livello_attuale + 1}_modulo2.py' ottenendo il loro contenuto da `_esegui_chiamata_astratta()`.
-    5. Lo script deve usare 'subprocess.run' trasmettendo le variabili d'ambiente correnti per eseguire in sequenza i file creati.
-    6. Se la fase attuale è uguale a {MAX_LIVELLI}, scrivi un report ed avvia uvicorn.
+    3. Il server uvicorn deve caricare l'applicazione usando rigidamente il nome del modulo tutto in minuscolo, scritto esattamente così: "{nome_modulo.lower()}:app".
+    4. Se la fase attuale ({livello_attuale}) è inferiore a {MAX_LIVELLI}, lo script deve definire la funzione segnaposto `_esegui_chiamata_astratta()` che restituisce la stringa "pass".
+    5. Deve definire due funzioni chiamate `_crea_nodo_A()` e `_crea_nodo_B()` che scrivono su disco due file chiamati 'app_fase{livello_attuale + 1}_modulo1.py' e 'app_fase{livello_attuale + 1}_modulo2.py' ottenendo il loro contenuto da `_esegui_chiamata_astratta()`.
+    6. Lo script deve usare 'subprocess.run' trasmettendo le variabili d'ambiente correnti per eseguire in sequenza i file creati.
+    7. Se la fase attuale è uguale a {MAX_LIVELLI}, scrivi un report ed avvia uvicorn.
     
     Restituisci SOLO il codice dentro un blocco ```python. Non aggiungere spiegazioni."""
 
@@ -129,6 +128,7 @@ def genera_modulo_astratto(nome_modulo, descrizione_compito, livello_attuale, pr
             max_tokens=3000
         )
         
+        # CORREZIONE APPLICATA: Inserito l'indice fisso [0] per estrarre la scelta corretta ed evitare il crash su 'list'
         codice_grezzo = completion.choices[0].message.content
         codice_pulito = pulisci_codice(codice_grezzo)
         
@@ -148,7 +148,6 @@ def genera_modulo_astratto(nome_modulo, descrizione_compito, livello_attuale, pr
             albero_modificato = trasformatore.visit(albero_sintattico)
             ast.fix_missing_locations(albero_modificato)
             
-            # Convertiamo l'albero sintattico modificato nuovamente in testo Python puro
             codice_iniettato = ast.unparse(albero_modificato)
         except Exception as err_ast:
             print(f"⚠️ Errore durante il parsing AST logico, attivazione fallback testuale: {err_ast}")
@@ -180,7 +179,7 @@ try:
     file_principale = "app_fase1_core.py"
     
     codice_core = genera_modulo_astratto(
-        nome_modulo="App_Fase1_Core",
+        nome_modulo="app_fase1_core",
         descrizione_compito=f"Crea uno script che implementi un'app FastAPI e scriva sul disco due script chiamati 'app_fase2_modulo1.py' e 'app_fase2_modulo2.py'. Il contenuto di questi file deve essere ottenuto chiamando `_esegui_chiamata_astratta(livello=2)`. Una volta scritti, eseguili in sequenza ordinata trasmettendo os.environ.",
         livello_attuale=1,
         primo_avvio=True
