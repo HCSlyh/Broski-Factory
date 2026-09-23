@@ -1,0 +1,5 @@
+{
+  "GROQ_API_KEY": "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",
+  "MODELLO_LLM": "openai/gpt-oss-120b",
+  "MAX_LIVELLI": 3
+}
