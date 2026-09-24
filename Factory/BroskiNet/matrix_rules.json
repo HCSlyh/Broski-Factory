@@ -1,0 +1,66 @@
+{
+  "matrix_version": "1.0.0",
+  "project_name": "BroskiNet Blueprint Matrix",
+  "macro_categories": {
+    "COMMERCE": {
+      "label": "Commercio Locale, Alimentari e Retail",
+      "examples": ["Macellaio", "Parrucchiere", "Abbigliamento", "Ristorante"],
+      "available_engines": [
+        "BN_RECEPTIONIST_WHATSAPP",
+        "BN_CASH_ASSISTANT",
+        "BN_PREDICTIVE_STOCK",
+        "BN_SOCIAL_PROMOTER"
+      ],
+      "metrics": {
+        "average_hourly_cost_eur": 18,
+        "time_saved_factor_per_employee_weekly_hours": 3.5
+      }
+    },
+    "SERVICES": {
+      "label": "Servizi, Noleggio e Logistica sul Campo",
+      "examples": ["Noleggio Auto", "Agenzia Immobiliare", "Artigiano", "Hotel"],
+      "available_engines": [
+        "BN_FAST_QUOTER",
+        "BN_CONTRACT_MANAGER",
+        "BN_FLEET_COORDINATOR",
+        "BN_LIVE_SUPPORT"
+      ],
+      "metrics": {
+        "average_hourly_cost_eur": 22,
+        "time_saved_factor_per_employee_weekly_hours": 4.5
+      }
+    },
+    "FINANCE": {
+      "label": "Finanza, Consulenza e Brokeraggio",
+      "examples": ["Banca", "Broker Assicurativo", "Promotore Finanziario"],
+      "available_engines": [
+        "BN_INVESTOR_TRIAGE",
+        "BN_COMPLIANCE_KYC",
+        "BN_FINANCIAL_ANALYST",
+        "BN_REPORT_GENERATOR"
+      ],
+      "metrics": {
+        "average_hourly_cost_eur": 35,
+        "time_saved_factor_per_employee_weekly_hours": 6.0
+      }
+    },
+    "ENTERPRISE": {
+      "label": "Aziende Strutturate e B2B",
+      "examples": ["Produzione", "Distribuzione", "Software House"],
+      "available_engines": [
+        "BN_TENDER_SCREENER",
+        "BN_LEGAL_REVIEWER",
+        "BN_CUSTOMER_SUCCESS",
+        "BN_HR_SCREENER"
+      ],
+      "metrics": {
+        "average_hourly_cost_eur": 28,
+        "time_saved_factor_per_employee_weekly_hours": 5.0
+      }
+    }
+  },
+  "roi_formulas": {
+    "weekly_hours_saved_formula": "Numero_Dipendenti * time_saved_factor_per_employee_weekly_hours",
+    "monthly_money_saved_formula": "Ore_Risparmiate_Settimanali * 4.33 * average_hourly_cost_eur"
+  }
+}

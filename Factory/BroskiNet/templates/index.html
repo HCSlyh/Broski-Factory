@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BroskiNet AI Factory</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #0d1117; color: #c9d1d9; padding: 40px; margin: 0; }
+        .container { max-width: 800px; margin: 0 auto; background: #161b22; padding: 30px; border-radius: 12px; border: 1px solid #30363d; }
+        h1 { color: #58a6ff; text-align: center; margin-bottom: 30px; }
+        label { display: block; margin: 15px 0 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 10px; background: #21262d; border: 1px solid #30363d; border-radius: 6px; color: #c9d1d9; box-sizing: border-box; }
+        button { background-color: #238636; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 20px; font-weight: bold; }
+        button:hover { background-color: #2ea44f; }
+        .agent-checkbox { display: flex; align-items: center; margin: 10px 0; background: #21262d; padding: 10px; border-radius: 6px; border: 1px solid #30363d; }
+        .agent-checkbox input { width: auto; margin-right: 15px; }
+        #results { margin-top: 30px; padding: 20px; background: #0d1117; border-left: 4px solid #58a6ff; border-radius: 4px; display: none; }
+        .roi-box { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .roi-card { background: #21262d; padding: 15px; border-radius: 6px; width: 48%; text-align: center; border: 1px solid #30363d; }
+        .roi-value { font-size: 24px; font-weight: bold; color: #58a6ff; }
+        .node-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        .node-badge { background: #388bfd26; color: #58a6ff; border: 1px solid #388bfd66; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 BroskiNet AI Factory</h1>
+    
+    <div id="step-1">
+        <label for="company_name">Nome della tua Attività</label>
+        <input type="text" id="company_name" placeholder="es. Salone Barber Bros, Slyh Finance Ltd...">
+
+        <label for="macro_category">Settore Commerciale</label>
+        <select id="macro_category" onchange="fetchAgents()">
+            <option value="">-- Seleziona un Settore --</option>
+            <option value="COMMERCE">Commercio Locale, Retail e Alimentari</option>
+            <option value="SERVICES">Servizi, Noleggio e Logistica</option>
+            <option value="FINANCE">Finanza, Consulenza e Brokeraggio</option>
+            <option value="ENTERPRISE">Aziende Strutturate e B2B</option>
+        </select>
+
+        <label for="employee_count">Numero di Dipendenti / Collaboratori</label>
+        <input type="number" id="employee_count" value="1" min="1">
+
+        <div id="agent-selection-area" style="display:none;">
+            <label>Seleziona gli Agenti IA da iniettare nella tua Mappa:</label>
+            <div id="agent-list"></div>
+        </div>
+
+        <button onclick="generateBlueprint()">Genera Architettura BroskiNet</button>
+    </div>
+
+    <div id="results">
+        <h2>📊 Analisi d'Impatto e Nodi Attivati</h2>
+        <div class="roi-box">
+            <div class="roi-card">
+                <div>Ore Recuperate / Settimana</div>
+                <div class="roi-value" id="res-hours">0</div>
+            </div>
+            <div class="roi-card">
+                <div>Risparmio Stimato / Mese</div>
+                <div class="roi-value" id="res-money">0 €</div>
+            </div>
+        </div>
+        <strong>Feedback Strategico (Groq):</strong>
+        <p id="res-ai" style="font-style: italic; line-height: 1.5; color: #8b949e;"></p>
+        
+        <strong>Mappa Stellare - Nodi Connessi al Core:</strong>
+        <div class="node-list" id="res-nodes"></div>
+    </div>
+</div>
+
+<script>
+    async function fetchAgents() {
+        const cat = document.getElementById('macro_category').value;
+        if (!cat) return;
+        
+        const response = await fetch('/api/get-agents', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ macro_category: cat })
+        });
+        
+        const data = await response.json();
+        const container = document.getElementById('agent-list');
+        container.innerHTML = '';
+        
+        data.available_engines.forEach(engine => {
+            container.innerHTML += `
+                <div class="agent-checkbox">
+                    <input type="checkbox" name="engines" value="${engine}" id="${engine}">
+                    <label for="${engine}" style="margin:0; font-weight:normal;">${engine.replace('BN_', '').replace(/_/g, ' ')}</label>
+                </div>
+            `;
+        });
+        
+        document.getElementById('agent-selection-area').style.display = 'block';
+    }
+
+    async function generateBlueprint() {
+        const selected = Array.from(document.querySelectorAll('input[name="engines"]:checked')).map(cb => cb.value);
+        const payload = {
+            company_name: document.getElementById('company_name').value || "Nuova Azienda",
+            macro_category: document.getElementById('macro_category').value,
+            employee_count: document.getElementById('employee_count').value,
+            selected_engines: selected
+        };
+
+        const response = await fetch('/api/generate-blueprint', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        
+        document.getElementById('res-hours').innerText = result.roi.hours_saved_weekly;
+        document.getElementById('res-money').innerText = result.roi.money_saved_monthly + " €";
+        document.getElementById('res-ai').innerText = result.ai_analysis;
+        
+        const nodesContainer = document.getElementById('res-nodes');
+        nodesContainer.innerHTML = '';
+        result.nodes.forEach(n => {
+            nodesContainer.innerHTML += `<span class="node-badge">🟢 ${n.id} [ONLINE]</span>`;
+        });
+        
+        document.getElementById('results').style.display = 'block';
+    }
+</script>
+</body>
+</html>

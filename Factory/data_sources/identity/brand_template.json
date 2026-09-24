@@ -1,0 +1,16 @@
+{
+  "business_info": {
+    "company_name": "INSERISCI_NOME_ATTIVITA",
+    "macro_category": "SELEZIONA_TRA_COMMERCE_SERVICES_FINANCE_ENTERPRISE",
+    "specific_industry": "es. Macelleria, Broker, Parrucchiere",
+    "size": "es. 1-5 Dipendenti"
+  },
+  "operational_bottlenecks": {
+    "primary_time_waster": "INSERISCI_PROBLEMA (es. Gestione Chiamate, Controllo Conti)",
+    "preferred_agent_focus": "INSERISCI_PREFERENZA"
+  },
+  "brand_voice": {
+    "tone": "es. Amichevole, Professionale, Istituzionale",
+    "primary_channel": "es. WhatsApp, Email"
+  }
+}
