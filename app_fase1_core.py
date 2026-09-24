@@ -42,7 +42,7 @@ def process_ai_request(payload: PayloadSaaS, x_paddle_subscription: str = Header
     try:
         client = Groq(api_key=GROQ_API_KEY)
         completion = client.chat.completions.create(
-            model="openai/gpt-oss-20b",  # MODELLO AGGIORNATO E ATTIVO AD ALTA VELOCITÀ
+            model="openai/gpt-oss-20b",
             messages=[
                 {"role": "system", "content": "Sei l'assistente IA della Broski Factory. Scrivi post social accattivanti e professionali."},
                 {"role": "user", "content": payload.prompt}
@@ -50,18 +50,15 @@ def process_ai_request(payload: PayloadSaaS, x_paddle_subscription: str = Header
             temperature=0.3,
             max_tokens=1000
         )
+        # CORREZIONE APPLICATA: Inserito l'indice [0] corretto per estrarre il messaggio dalla lista choices
         return {
             "success": True,
             "engine": "Groq GPT-OSS Cloud Network",
             "subscription_verified": True,
-            "response": completion.choices.message.content.strip()
+            "response": completion.choices[0].message.content.strip()
         }
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("app_fase1_core:app", host="0.0.0.0", port=8000, reload=True)
 
 if __name__ == "__main__":
     import uvicorn
