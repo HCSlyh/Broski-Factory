@@ -29,15 +29,11 @@ def read_root():
 
 @app.post("/api/v1/process", summary="Elaborazione Richiesta Commerciale IA - Richiede Abbonamento")
 def process_ai_request(payload: PayloadSaaS, x_paddle_subscription: str = Header(None)):
-    """
-    Endpoint commerciale protetto. Verifica la licenza dell'utente tramite 
-    l'header di sicurezza prima di sbloccare i cluster IA di Groq.
-    """
-    # CANCELLO DI PAGAMENTO (PAYWALL): Se l'utente non passa l'ID abbonamento corretto, viene bloccato
+    # CANCELLO DI PAGAMENTO (PAYWALL)
     if not x_paddle_subscription or x_paddle_subscription != PADDLE_PRICE_ID:
         raise HTTPException(
             status_code=402, 
-            detail=f"Pagamento richiesto. Abbonamento non attivo o non valido per la tariffa {PADDLE_PRICE_ID}. Visita la landing page per attivare il servizio."
+            detail=f"Pagamento richiesto. Abbonamento non attivo o non valido per la tariffa {PADDLE_PRICE_ID}."
         )
     
     if not GROQ_API_KEY:
@@ -46,9 +42,9 @@ def process_ai_request(payload: PayloadSaaS, x_paddle_subscription: str = Header
     try:
         client = Groq(api_key=GROQ_API_KEY)
         completion = client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="openai/gpt-oss-20b",  # MODELLO AGGIORNATO E ATTIVO AD ALTA VELOCITÀ
             messages=[
-                {"role": "system", "content": "Sei l'assistente IA commerciale della Broski Factory."},
+                {"role": "system", "content": "Sei l'assistente IA della Broski Factory. Scrivi post social accattivanti e professionali."},
                 {"role": "user", "content": payload.prompt}
             ],
             temperature=0.3,
@@ -56,12 +52,16 @@ def process_ai_request(payload: PayloadSaaS, x_paddle_subscription: str = Header
         )
         return {
             "success": True,
-            "engine": "Groq Llama3 Cloud Network",
+            "engine": "Groq GPT-OSS Cloud Network",
             "subscription_verified": True,
             "response": completion.choices.message.content.strip()
         }
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app_fase1_core:app", host="0.0.0.0", port=8000, reload=True)
 
 if __name__ == "__main__":
     import uvicorn
