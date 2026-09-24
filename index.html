@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broski Copy - Gestione Contenuti IA per Attività Locali</title>
+    <!-- Tailwind CSS Standard per Layout Pulito -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- Script Ufficiale di Paddle per la cassa protetta -->
+    <script src="https://paddle.com"></script>
+    <style>
+        .paypal-shadow {
+            box-shadow: 0 10px 35px -5px rgba(0, 48, 135, 0.08), 0 8px 15px -6px rgba(0, 0, 0, 0.03);
+        }
+        .bg-soft {
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="bg-soft text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- NAVBAR ISTITUZIONALE STILE PAYPAL -->
+    <nav class="border-b border-slate-200/80 bg-white sticky top-0 z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <!-- Blu istituzionale profondo per trasmettere autorità -->
+                <span class="text-2xl font-black tracking-tight text-[#003087]">Broski<span class="text-[#0079C1]">Copy</span></span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-[11px] bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-mono border border-slate-200 font-bold uppercase tracking-wider">Connessione Cloud Protetta</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- INTRODUZIONE CHIARA E AFFIDABILE -->
+    <header class="max-w-3xl mx-auto text-center px-6 pt-16 pb-12">
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">
+            Automazione contenuti social per la tua attività commerciale
+        </h1>
+        <p class="text-base sm:text-lg text-slate-500 max-w-xl mx-auto leading-relaxed">
+            Genera in tempo reale testi promozionali e copie pubblicitarie ottimizzate per attirare clienti nella tua attività locale. Certificato, sicuro e immediato.
+        </p>
+    </header>
+
+    <!-- PLANCIA DI LAVORO PROFESSIONALE B2B -->
+    <main class="max-w-5xl mx-auto px-6 mb-16 w-full flex-grow">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+            
+            <!-- PANNELLO DI INSERIMENTO (STILE DASHBOARD BANCARIA) -->
+            <div class="bg-white p-8 rounded-2xl border border-slate-200/80 paypal-shadow flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-slate-100">
+                        <span class="text-blue-600 text-lg">📊</span>
+                        <h2 class="text-lg font-bold text-slate-900 tracking-tight">Parametri di Generazione</h2>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5">Descrizione dell'evento o promozione</label>
+                        <textarea id="promptInput" rows="5" class="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-4 text-sm text-slate-800 focus:outline-none focus:border-[#0079C1] focus:ring-1 focus:ring-[#0079C1] transition-all placeholder-slate-400 font-medium leading-relaxed" placeholder="Es: Serata pizza a metà prezzo questo venerdì sera dalle 19..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Licenza nascosta pre-configurata -->
+                <input type="hidden" id="licenseKey" value="pri_01m38bk0tq7aqnyeapr7q1w3wm">
+
+                <button onclick="inviaRichiestaIA()" id="btnInvia" class="w-full bg-[#0079C1] text-white font-bold text-sm uppercase tracking-wider py-4 px-6 rounded-xl hover:bg-[#005ea3] shadow-md shadow-blue-500/10 transition-all flex justify-center items-center gap-2 cursor-pointer transform active:scale-[0.99]">
+                    Elabora Testo Commerciale
+                </button>
+            </div>
+
+            <!-- PANNELLO DI RILASCIO CONTENUTO -->
+            <div class="bg-white p-8 rounded-2xl border border-slate-200/80 paypal-shadow flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-slate-100">
+                        <span class="text-blue-600 text-lg">📝</span>
+                        <h2 class="text-lg font-bold text-slate-900 tracking-tight">Copia Ottimizzata Ricevuta</h2>
+                    </div>
+                    <div id="outputArea" class="text-sm text-slate-600 whitespace-pre-line leading-relaxed bg-slate-50/50 p-5 rounded-xl border border-slate-200 min-h-[220px] font-medium transition-all">
+                        Il testo elaborato dall'infrastruttura comparirà in questa sezione. Inserisci i dati a sinistra e avvia la sincronizzazione.
+                    </div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center text-xs text-slate-400 font-mono">
+                    <span>Infrastruttura: Certificata Cloud</span>
+                    <span>Broski Network Ltd</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BLOCCO DI ACQUISTO MODERNO E PULITO (STILE CHECKOUT STRIPE/PAYPAL) -->
+        <div class="mt-12 text-center bg-white p-10 rounded-2xl border border-slate-200/80 paypal-shadow max-w-3xl mx-auto">
+            <div class="inline-block bg-blue-50 text-[#003087] text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3 border border-blue-100">
+                Licenza d'uso Aziendale
+            </div>
+            <h3 class="text-xl font-bold tracking-tight mb-2 text-slate-900">Sblocca il pannello senza limiti</h3>
+            <p class="text-sm text-slate-500 max-w-md mx-auto mb-6 leading-relaxed">
+                Attiva l'abbonamento professionale a <span class="text-[#003087] font-bold">49,00 € / mese</span> esenti IVA. Gestione flessibile, disdici autonomamente in qualsiasi momento dal tuo profilo.
+            </p>
+            <button onclick="apriCassaPaddle()" class="inline-flex items-center gap-2.5 bg-[#ffc439] hover:bg-[#f2ba36] text-slate-900 font-bold text-sm uppercase tracking-wider py-4 px-10 rounded-xl shadow-sm transition-colors cursor-pointer transform active:scale-[0.99]">
+                💳 Attiva Abbonamento (Test Mode)
+            </button>
+        </div>
+    </main>
+
+    <!-- FOOTER ISTITUZIONALE -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400 w-full">
+        <p>© 2026 Broski Copy Corporation. Tutti i diritti riservati. Connessioni cifrate tramite protocollo SSL standard.</p>
+    </footer>
+
+    <!-- LOGICA DI INTERAZIONE JAVASCRIPT -->
+    <script>
+        // Inizializzazione Paddle Sandbox
+        Paddle.Environment.set('sandbox');
+        Paddle.Initialize({ 
+            token: 'test_6c28f6458516fb8e15488eb7c8a'
+        });
+
+        function apriCassaPaddle() {
+            Paddle.Checkout.open({
+                items: [{
+                    priceId: 'pri_01m38bk0tq7aqnyeapr7q1w3wm',
+                    quantity: 1
+                }]
+            });
+        }
+
+        async function inviaRichiestaIA() {
+            const promptText = document.getElementById('promptInput').value.trim();
+            const licenseKey = document.getElementById('licenseKey').value;
+            const btn = document.getElementById('btnInvia');
+            const output = document.getElementById('outputArea');
+
+            if (!promptText) {
+                alert('Inserisci una descrizione della promozione nel campo di sinistra.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = 'Elaborazione in corso...';
+            output.innerHTML = '<span class="text-blue-600 font-semibold animate-pulse">Infrastruttura cloud in ascolto. Generazione del testo in corso...</span>';
+
+            try {
+                const response = await fetch('https://onrender.com', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'x-paddle-subscription': licenseKey
+                    },
+                    body: JSON.stringify({
+                        prompt: promptText,
+                        client_id: 'browser_user_test'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    output.innerText = data.response;
+                } else {
+                    output.innerHTML = `<span class="text-rose-600 font-bold block mb-1">⚠️ Licenza Non Rilevata (Codice ${response.status})</span><span class="text-slate-400 text-xs">È richiesto un abbonamento attivo per eseguire query su questa tratta. Usa il modulo in basso.</span>`;
+                }
+            } catch (error) {
+                output.innerHTML = '<span class="text-rose-600 font-bold">❌ Errore di Rete</span><br><br><span class="text-slate-400 text-xs">Impossibile stabilire una connessione stabile con i nodi europei di Render.</span>';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Elabora Testo Commerciale';
+            }
+        }
+    </script>
+</body>
+</html>
